@@ -34,8 +34,6 @@ class CharList extends Component {
             charList,
             loading: false,
         });
-
-        console.log(this.state.charList);
     }
 
     componentDidMount() {
@@ -48,7 +46,9 @@ class CharList extends Component {
                 <CharListItem 
                     name={item.name}
                     thumbnail={item.thumbnail}
-                    key={item.id}/>
+                    key={item.id}
+                    id={item.id}
+                    onSelectedChar={this.props.onSelectedChar}/>
             )
         })
 

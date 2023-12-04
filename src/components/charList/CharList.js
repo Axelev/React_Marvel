@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import CharListItem from '../charListItem/charListItem';
 import Spinner from '../spinner/spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -17,7 +18,13 @@ class CharList extends Component {
         charEnded: false
     }
 
+    checkPropTypes() {}
+
     marvelService = new MarvelService();
+
+    componentDidMount() {
+        this.updateList();
+    }
 
     updateList = () => {
         this.onRequest();
@@ -58,9 +65,7 @@ class CharList extends Component {
         }));
     }
 
-    componentDidMount() {
-        this.updateList();
-    }
+
 
     renderItems = (arr) => {
         const items = arr.map(item => {
@@ -106,6 +111,10 @@ class CharList extends Component {
         )
     }
     
+}
+
+CharList.propTypes = {
+    onSelectedChar: PropTypes.func.isRequired
 }
 
 export default CharList;

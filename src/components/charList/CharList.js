@@ -18,12 +18,12 @@ class CharList extends Component {
         charEnded: false
     }
 
-    checkPropTypes() {}
 
-    marvelService = new MarvelService();
+    marvelService = new MarvelService();    
 
     componentDidMount() {
         this.updateList();
+        console.dir(this.itemRef)
     }
 
     updateList = () => {
@@ -65,17 +65,33 @@ class CharList extends Component {
         }));
     }
 
+    itemRef = [];
+
+    setRef = (ref) => {
+        this.itemRef.push(ref);
+    }
+
+    focusOnItem = (id) => {
+        this.itemRef.forEach(item => item.classList.remove('char__item_selected'));
+        this.itemRef[id].classList.add('char__item_selected');
+        this.itemRef[id].focus();
+
+    }
+
 
 
     renderItems = (arr) => {
-        const items = arr.map(item => {
+        const items = arr.map((item, i) => {
             return (
-                <CharListItem 
+                <CharListItem
                     name={item.name}
                     thumbnail={item.thumbnail}
+                    sendRef={this.setRef}
                     key={item.id}
                     id={item.id}
-                    onSelectedChar={this.props.onSelectedChar}/>
+                    onSelectedChar={this.props.onSelectedChar}
+                    focusOnItem={this.focusOnItem}
+                    itemIndex={i}/>
             )
         })
 
@@ -116,5 +132,7 @@ class CharList extends Component {
 CharList.propTypes = {
     onSelectedChar: PropTypes.func.isRequired
 }
+
+
 
 export default CharList;

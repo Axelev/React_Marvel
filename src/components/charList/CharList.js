@@ -5,41 +5,29 @@ import CharListItem from '../charListItem/charListItem';
 import Spinner from '../spinner/spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 import './charList.scss';
 
 
 const CharList = (props) => {
 
     const [charList, setCharlist] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
     const [newItemLoading, setNewItemLoading] = useState(false);
     const [offset, setOffset] = useState(200);
     const [charEnded, setCharEnded] = useState(false);
 
-    const marvelService = new MarvelService();    
+    const {loading, error, getAllCharacters} = useMarvelService();    
 
     useEffect(() => {
-        onRequest();
+        onRequest(offset, true);
     }, []);
 
-    const onRequest = (offset) => {
-        onCharListLoading();
-        marvelService.getAllCharacters(offset)
-            .then(listLoaded)
-            .catch(onError)
-    }
-
-    const onCharListLoading = () => {
-        setNewItemLoading(true);
+    const onRequest = (offset, initial) => {
+        initial ? setNewItemLoading(false) : setNewItemLoading(true);        
+        getAllCharacters(offset)
+            .then(listLoaded);
     }
     
-    const onError = () => {
-        setError(true);
-        setLoading(false);
-    }
-
     const listLoaded = (newCharList) => {
         let ended = false;
         if (newCharList < 9) {
@@ -47,7 +35,6 @@ const CharList = (props) => {
         }
 
         setCharlist((charList) => [...charList, ...newCharList]);
-        setLoading(false);
         setNewItemLoading(false);
         setOffset(offset => offset + 9);
         setCharEnded(ended);
@@ -86,7 +73,7 @@ const CharList = (props) => {
         )
     }
 
-    const spinner = loading? <Spinner/> : null;
+    const spinner = loading && !newItemLoading ? <Spinner/> : null;
     const errorMessage = error? <ErrorMessage/> : null;
     const content = !error || loading ? renderItems(charList): null;
 

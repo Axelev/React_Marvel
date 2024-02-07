@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
+import { TransitionGroup } from 'react-transition-group';
+
 import PropTypes from 'prop-types';
 
 import CharListItem from '../charListItem/charListItem';
@@ -67,11 +69,14 @@ const CharList = (props) => {
         })
 
         return (
-            <ul className="char__grid">
+            <TransitionGroup component={'ul'} className="char__grid" >
                 {items}
-            </ul>
+            </TransitionGroup>
+
         )
     }
+
+    
 
     const spinner = loading && !newItemLoading ? <Spinner/> : null;
     const errorMessage = error? <ErrorMessage/> : null;
@@ -83,14 +88,15 @@ const CharList = (props) => {
             {spinner}
             {errorMessage}
             {content}
-            <button 
-                className="button button__main button__long"
-                disabled={newItemLoading}
-                style={{'display': charEnded ? 'none' : 'block'}}
-                onClick={() => onRequest(offset)}>
-                <div className="inner">load more</div>
-            </button>
+        <button 
+            className="button button__main button__long"
+            disabled={newItemLoading}
+            style={{'display': charEnded ? 'none' : 'block'}}
+            onClick={() => onRequest(offset)}>
+            <div className="inner">load more</div>
+        </button>
         </div>
+        
     )   
 }
 

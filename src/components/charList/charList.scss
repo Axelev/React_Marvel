@@ -3,10 +3,21 @@
 .char {
     &__content {
         margin-top: 50px;
-        display: grid;
+        // display: grid;
         grid-template-columns: 650px 425px;
         column-gap: 25px;
         align-items: start;
+        
+        &__side {
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            width: 100%;
+            grid-template-columns: 650px 425px;
+            column-gap: 25px;
+        }
+
     }
     &__grid {
         display: grid;

@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { TransitionGroup } from 'react-transition-group';
 
 import PropTypes from 'prop-types';
 
@@ -22,6 +21,7 @@ const CharList = (props) => {
 
     useEffect(() => {
         onRequest(offset, true);
+        console.log('render');
     }, []);
 
     const onRequest = (offset, initial) => {
@@ -69,9 +69,9 @@ const CharList = (props) => {
         })
 
         return (
-            <TransitionGroup component={'ul'} className="char__grid" >
+            <ul className="char__grid" >
                 {items}
-            </TransitionGroup>
+            </ul>
 
         )
     }

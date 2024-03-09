@@ -13,10 +13,8 @@ const setContent = (process, data) => {
     switch(process) {
         case 'waiting':
             return null;
-            break;
         case 'loading':
             return <Spinner/>;
-            break;
         case 'confirmed':
             return <div className="char__search-wrapper">
                         <div className="char__search-success">There is! Visit {data[0].name} page?</div>
@@ -24,10 +22,8 @@ const setContent = (process, data) => {
                             <div className="inner">To page</div>
                         </Link>
                     </div>;
-            break;
         case 'error':
             return <div className="char__search-critical-error"><ErrorMessage /></div>;
-            break;
         default:
             throw new Error('Unexpected procces state');
     }
@@ -35,7 +31,7 @@ const setContent = (process, data) => {
 
 const CharSearchForm = () => {
     const [char, setChar] = useState(null);
-    const {loading, error, getCharacterByName, clearError, process, setProcess} = useMarvelService();
+    const {loading, getCharacterByName, clearError, process, setProcess} = useMarvelService();
 
     const onCharLoaded = (char) => {
         setChar(char);

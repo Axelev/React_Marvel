@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
@@ -13,16 +14,12 @@ const setContent = (process, Component, newItemLoading) => {
     switch(process) {
         case 'waiting':
             return <Spinner/>;
-            break;
         case 'loading':
             return newItemLoading ? <Component/> : <Spinner/>;
-            break;
         case 'confirmed':
             return <Component/>;
-            break;
         case 'error':
             return <ErrorMessage/>;
-            break;
         default:
             throw new Error('Unexpected procces state');
     }
@@ -35,7 +32,7 @@ const CharList = (props) => {
     const [offset, setOffset] = useState(200);
     const [charEnded, setCharEnded] = useState(false);
 
-    const {loading, error, getAllCharacters, process, setProcess} = useMarvelService();    
+    const {getAllCharacters, process, setProcess} = useMarvelService();    
 
     useEffect(() => {
         onRequest(offset, true);

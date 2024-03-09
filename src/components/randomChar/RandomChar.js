@@ -3,13 +3,12 @@ import { useEffect, useState } from 'react';
 import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
 import useMarvelService from '../../services/MarvelService';
-import Spinner from '../spinner/spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
+import setContent from '../../utils/setContent';
 
 const RandomChar = () => {
 
     const [char, setChar] = useState({});
-    const {loading, error, getCharacter, clearError} =  useMarvelService();
+    const {getCharacter, clearError, process, setProcess} =  useMarvelService();
 
     useEffect(() => {
         updateChar();
@@ -28,29 +27,13 @@ const RandomChar = () => {
         clearError();
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
         getCharacter(id)
-            .then(onCharLoaded);
+            .then(onCharLoaded)
+            .then(() => setProcess('confirmed'));
     };
-   
-    const descriptionCorrector = (text) => {
-        if (!text) {
-            return 'Description is missing'
-        } else if (text.length > 60) {
-            return text.slice(0, 60) + '...';
-        } else return text;
-    }
-
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const spinner = loading ? <Spinner/> : null;
-    const content = !(loading || error) ? 
-                    <View char={char} 
-                    descriptionCorrector={descriptionCorrector}/> :
-                    null;
-    
+      
     return (
         <div className="randomchar">
-            {errorMessage}
-            {spinner}
-            {content}
+            {setContent(process, View, char)}
             <div className="randomchar__static">
                 <p className="randomchar__title">
                     Random character for today!<br/>
@@ -70,12 +53,20 @@ const RandomChar = () => {
     
 }
 
-const View = ({char, descriptionCorrector}) => {
-    const {name, description, thumbnail, homepage, wiki} = char;
+const View = ({data}) => {
+    const {name, description, thumbnail, homepage, wiki} = data;
     let imgClassName = 'randomchar__img';
 
     if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
         imgClassName += '__not_found';
+    }
+
+    const descriptionCorrector = (text) => {
+        if (!text) {
+            return 'Description is missing'
+        } else if (text.length > 60) {
+            return text.slice(0, 60) + '...';
+        } else return text;
     }
 
     return (
